@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大连婚礼筹备计划 · 2027</title>
+<style>
+  :root{
+    --ink:#3b3134; --ink-soft:#7a6e72; --line:#eadfe3;
+    --brand:#b07a8c; --brand-deep:#8e5a6e; --brand-soft:#f7eef1;
+    --ok:#4f8a6b; --warn:#c98a2e; --bg:#fdfafb; --card:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.6}
+  header{background:linear-gradient(135deg,#8e5a6e,#b07a8c 55%,#c9a7b7);color:#fff;padding:32px 24px 26px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  h1{margin:0 0 6px;font-size:26px;letter-spacing:1px;font-weight:600}
+  .sub{opacity:.9;font-size:14px}
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
+  .stat{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);
+    border-radius:12px;padding:10px 16px;min-width:130px;backdrop-filter:blur(4px)}
+  .stat b{display:block;font-size:22px;font-weight:600;line-height:1.2}
+  .stat span{font-size:12px;opacity:.85}
+  .bar{height:6px;background:rgba(255,255,255,.25);border-radius:99px;margin-top:8px;overflow:hidden}
+  .bar>i{display:block;height:100%;background:#fff;border-radius:99px;transition:width .4s}
+
+  nav{display:flex;gap:6px;margin:22px 0 14px;flex-wrap:wrap}
+  nav button{border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+    padding:9px 18px;border-radius:99px;cursor:pointer;font-size:14px;font-family:inherit;transition:.2s}
+  nav button.active{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff}
+  nav button:hover:not(.active){background:var(--brand-soft);color:var(--brand-deep)}
+
+  section{display:none} section.show{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(120,90,100,.05)}
+  h2{font-size:17px;margin:0 0 14px;padding-left:10px;border-left:4px solid var(--brand);font-weight:600}
+  h3{font-size:15px;margin:0 0 10px;color:var(--brand-deep)}
+
+  .phase{margin-bottom:18px}
+  .phase-h{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--brand);flex:none}
+  .phase-h .time{font-size:12px;color:var(--ink-soft);background:var(--brand-soft);
+    padding:2px 9px;border-radius:99px}
+  ul.tasks{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px dashed var(--line)}
+  ul.tasks li{position:relative;padding:9px 0 9px 14px;display:flex;gap:10px;align-items:flex-start}
+  ul.tasks li:before{content:"";position:absolute;left:-6px;top:17px;width:10px;height:10px;
+    border-radius:50%;background:#fff;border:2px solid var(--brand)}
+  ul.tasks li.done .t-title{text-decoration:line-through;color:var(--ink-soft)}
+  ul.tasks li.done:before{background:var(--ok);border-color:var(--ok)}
+  input[type=checkbox]{width:17px;height:17px;margin-top:3px;accent-color:var(--brand-deep);flex:none;cursor:pointer}
+  .t-title{font-weight:600;font-size:14px}
+  .t-meta{font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .tag{display:inline-block;font-size:11px;background:var(--brand-soft);color:var(--brand-deep);
+    padding:1px 8px;border-radius:99px;margin-right:6px}
+  .tag.money{background:#eef6f1;color:var(--ok)}
+  .tag.warn{background:#fdf3e2;color:var(--warn)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:var(--brand-soft);color:var(--brand-deep);font-weight:600;font-size:13px;
+    position:sticky;top:0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.total td{background:var(--brand-soft);font-weight:700}
+  tbody tr:hover td{background:#fbf7f9}
+  input.money-in{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 9px;
+    font-family:inherit;font-size:13px;text-align:right;background:#fff;color:var(--ink)}
+  input.money-in:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+  .scroll{overflow-x:auto}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .kpi{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+  .kpi .k{font-size:12px;color:var(--ink-soft)}
+  .kpi .v{font-size:19px;font-weight:600;margin-top:2px;color:var(--brand-deep)}
+  .kpi .d{font-size:12px;color:var(--ink-soft);margin-top:4px}
+  .green{color:var(--ok)}
+
+  .tl{position:relative;padding-left:18px}
+  .tl .row{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .tl .row:last-child{border-bottom:none}
+  .tl .when{font-size:13px;color:var(--brand-deep);font-weight:600}
+  .tl .what{font-size:13px}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:26px 20px 40px}
+  .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .tools label{font-size:13px;color:var(--ink-soft)}
+  .tools input[type=date]{border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-family:inherit;font-size:13px}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;
+    font-size:13px;cursor:pointer;font-family:inherit;color:var(--ink-soft)}
+  .btn:hover{background:var(--brand-soft);color:var(--brand-deep)}
+  .note{font-size:12px;color:var(--ink-soft);background:var(--brand-soft);
+    border-radius:10px;padding:10px 14px;margin-top:10px}
+  @media print{nav,.tools,#btnReset{display:none}section{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>大连婚礼筹备计划 · 2027</h1>
+    <div class="sub">婚期：2027年5月 / 6月（待定）　·　婚假：2027年4月（衔接清明）　·　婚纱照：2027年5月上中旬</div>
+    <div class="stats">
+      <div class="stat"><b id="cdDays">—</b><span>距婚期（天）</span></div>
+      <div class="stat"><b id="pct">0%</b><span>筹备完成度</span>
+        <div class="bar"><i id="pctBar" style="width:0"></i></div>
+      </div>
+      <div class="stat"><b id="doneCnt">0 / 0</b><span>已完成事项</span></div>
+      <div class="stat"><b id="budgetSum">¥0</b><span>预算合计（万元级）</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav>
+    <button class="active" data-tab="timeline">时间轴</button>
+    <button data-tab="budget">预算表</button>
+    <button data-tab="nature">物候 · 花期</button>
+    <button data-tab="weather">天气 · 穿衣</button>
+    <button data-tab="dates">关键日期</button>
+  </nav>
+
+  <!-- 时间轴 -->
+  <section id="timeline" class="show">
+    <div class="card">
+      <div class="tools">
+        <label>婚期（用于倒计时）：</label>
+        <input type="date" id="weddingDate" value="2027-06-01">
+        <button class="btn" id="btnReset">清空勾选记录</button>
+        <span style="font-size:12px;color:var(--ink-soft)">勾选状态自动保存在本机浏览器</span>
+      </div>
+      <h2 id="taskTitle">倒排时间表</h2>
+      <div id="timelineBox"></div>
+    </div>
+  </section>
+
+  <!-- 预算 -->
+  <section id="budget">
+    <div class="card">
+      <h2>预算测算（按 20 桌、中档标准）</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr>
+            <th style="width:80px">类别</th><th>项目</th>
+            <th class="num" style="width:110px">预算(元)</th>
+            <th class="num" style="width:120px">实际(元)</th>
+            <th class="num" style="width:110px">差额(元)</th><th>备注</th>
+          </tr></thead>
+          <tbody id="budgetBody"></tbody>
+        </table>
+      </div>
+      <div class="note">实际列可直接填写，差额 / 小计 / 备用金 / 合计会自动计算；备用金默认按小计的 10% 计提。</div>
+    </div>
+  </section>
+
+  <!-- 物候 -->
+  <section id="nature">
+    <div class="card">
+      <h2>大连植被与天气时间线</h2>
+      <div class="grid">
+        <div class="kpi"><div class="k">3 月下旬</div><div class="v">草坪开始返青</div><div class="d">草刚绿、树未发芽，整体偏黄绿</div></div>
+        <div class="kpi"><div class="k">4 月上中旬</div><div class="v">草地基本全绿</div><div class="d">树木刚萌芽，外景仍显稀疏</div></div>
+        <div class="kpi"><div class="k">4 月中下旬</div><div class="v green">樱花季</div><div class="d">旅顺 203 景区、龙王塘樱花园</div></div>
+        <div class="kpi"><div class="k">4 月底 – 5 月上旬</div><div class="v green">郁金香 / 牡丹</div><div class="d">劳动公园、旅顺，色彩最丰富</div></div>
+        <div class="kpi"><div class="k">5 月上中旬</div><div class="v green">草绿透 + 花期佳</div><div class="d">全年拍外景最佳窗口，气温 16–21℃，体感最舒适</div></div>
+        <div class="kpi"><div class="k">5 月中下旬</div><div class="v">槐花季</div><div class="d">大连槐花节，画面干净</div></div>
+        <div class="kpi"><div class="k">5 – 6 月</div><div class="v" style="color:var(--warn)">海雾季</div><div class="d">清晨海边能见度低、风凉，外景建议 10 点后，并预留机动日</div></div>
+        <div class="kpi"><div class="k">6 月上中旬</div><div class="v">气温 20–24℃</div><div class="d">户外仪式舒适，蚊虫渐多需防蚊</div></div>
+        <div class="kpi"><div class="k">6 月下旬起</div><div class="v" style="color:var(--warn)">雨热期</div><div class="d">户外草坪风险上升，务必备室内方案</div></div>
+      </div>
+      <div class="note"><b>结论：</b>5 月拍婚纱照草已完全绿透，且正值花期、气温舒适，是大连一年中拍外景的最佳月份之一；4 月清明休婚假时草刚返青、树未长开，用来休假出行正好。穿衣体感与避晒安排见「天气 · 穿衣」。</div>
+    </div>
+  </section>
+
+  <!-- 天气穿衣 -->
+  <section id="weather">
+    <div class="card">
+      <h2>分时段体感：穿西装热不热</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr>
+            <th style="width:150px">时段</th>
+            <th class="num" style="width:100px">白天高温</th>
+            <th class="num" style="width:100px">夜间低温</th>
+            <th style="width:170px">湿度与风况</th>
+            <th style="width:150px">穿西装体感</th>
+            <th>应对建议</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><b>5 月初</b> 5/1–5/10</td><td class="num">18–21℃</td><td class="num">11–14℃</td>
+              <td>湿度约 60%，海风大</td><td class="green">不热，早晚偏凉</td>
+              <td>四季款西装即可；早晚加外套，别只穿衬衫出门</td></tr>
+            <tr><td><b>5 月中</b> 5/11–5/20</td><td class="num">21–23℃</td><td class="num">14–16℃</td>
+              <td>湿度约 65%</td><td class="green">舒适，全天可穿全套</td>
+              <td>全年最舒服的窗口，无需特殊处理</td></tr>
+            <tr><td><b>5 月末</b> 5/21–5/31</td><td class="num">22–24℃</td><td class="num">15–17℃</td>
+              <td>湿度约 70%，海雾日增多</td><td style="color:var(--warn)">临界点，日晒下走动微汗</td>
+              <td>面料降至 230–260g；半衬/无衬；浅灰、米、浅蓝；迎宾与户外只穿衬衫 + 马甲</td></tr>
+            <tr><td><b>6 月初</b> 6/1–6/10</td><td class="num">24–26℃</td><td class="num">17–19℃</td>
+              <td>湿度 75%+，闷热感初现</td><td style="color:var(--warn)">全套西装偏热</td>
+              <td>户外排 10 点前或 16 点后；衬衫备 2 件轮换；内搭吸汗背心；确认宴会厅空调</td></tr>
+            <tr><td><b>6 月中下旬</b> 6/11–6/30</td><td class="num">25–27℃</td><td class="num">19–21℃</td>
+              <td>湿度约 80%，雨日增多</td><td style="color:#c0392b">明显偏热，户外易出汗</td>
+              <td>尽量室内仪式；必须户外则全程可脱外套，选亚麻或泡泡纱</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">大连市区常年气候平均值，实际以临近天气预报为准。升温慢、海风大是大连的特点，真正闷热要到盛夏，本表按需求不含 7 月。</div>
+    </div>
+
+    <div class="card">
+      <h2>西装与婚纱选购清单</h2>
+      <div class="grid">
+        <div class="kpi"><div class="k">面料克重</div><div class="v">230–260g</div>
+          <div class="d">5 月初可用 260–290g 四季款；5 月末起降到 230–260g，克重越低越透气</div></div>
+        <div class="kpi"><div class="k">面料成分</div><div class="v">羊毛 + 亚麻 / 真丝</div>
+          <div class="d">也可选泡泡纱、热带羊毛；纯化纤闷热，不建议</div></div>
+        <div class="kpi"><div class="k">工艺结构</div><div class="v">半衬 / 无衬</div>
+          <div class="d">半里或无里，透气性提升最明显的一项</div></div>
+        <div class="kpi"><div class="k">颜色</div><div class="v">浅灰 / 米色 / 浅蓝</div>
+          <div class="d">吸热少，海边外景也更上镜</div></div>
+        <div class="kpi"><div class="k">衬衫</div><div class="v">府绸或亚麻混纺</div>
+          <div class="d">长袖备 2 件轮换，出汗后可及时更换</div></div>
+        <div class="kpi"><div class="k">内搭与防护</div><div class="v">背心 + 止汗 + 风扇</div>
+          <div class="d">防止衬衫后背湿透</div></div>
+        <div class="kpi"><div class="k">新娘婚纱</div><div class="v">轻纱 / 薄蕾丝</div>
+          <div class="d">避开厚重缎面大拖尾，5 月末–6 月初同理</div></div>
+        <div class="kpi"><div class="k">备用方案</div><div class="v">短袖衬衫 + 领带</div>
+          <div class="d">极端闷热时的退路</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>环节时段安排（避晒避热）</h2>
+      <div class="tl">
+        <div class="row"><div class="when">户外仪式</div><div class="what"><b>10:00 前 或 16:00 后</b><br>
+          <span style="color:var(--ink-soft)">避开 11–15 点暴晒与紫外线最强时段</span></div></div>
+        <div class="row"><div class="when">迎宾</div><div class="what"><b>设在遮阳处或室内</b><br>
+          <span style="color:var(--ink-soft)">日晒 + 握手走动，体感比气温高 3–5℃</span></div></div>
+        <div class="row"><div class="when">外景拍摄</div><div class="what"><b>9–11 点、16–18 点</b><br>
+          <span style="color:var(--ink-soft)">光线柔和，同时避开高温</span></div></div>
+        <div class="row"><div class="when">晚宴</div><div class="what"><b>提前确认宴会厅空调</b><br>
+          <span style="color:var(--ink-soft)">20 桌人多的厅若无空调会很闷</span></div></div>
+        <div class="row"><div class="when">海边 First Look</div><div class="what"><b>备薄外套</b><br>
+          <span style="color:var(--ink-soft)">清晨海雾湿凉，比午后低 6–8℃</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关键日期 -->
+  <section id="dates">
+    <div class="card">
+      <h2>关键日期与提醒</h2>
+      <div class="tl" id="datesBox"></div>
+      <div class="note">放假安排以国务院公布为准（通常前一年 11 月发布）；婚假天数以所在单位制度为准，辽宁约为 10 天（国家 3 天 + 省条例延长）。</div>
+    </div>
+  </section>
+</div>
+
+<footer>大连婚礼筹备计划 · 生成于 2026-09-26 · 数据可直接在页面中编辑与跟踪</footer>
+
+<script>
+const PHASES = [
+  {name:"启动期", time:"2026.09 – 11", color:"#b07a8c", items:[
+    ["确定婚礼城市与时间窗（大连 / 2027 年 5 月或 6 月）","先把 5 月还是 6 月定下来，酒店好日子提前 10–12 个月抢","新人双方","",""],
+    ["双方家长见面，沟通预算总额与分工","预算一次谈拢，后期少返工","双方父母","",""],
+    ["草拟宾客名单，估算桌数（本表按 20 桌测算）","桌数直接决定总预算","新人双方","",""],
+    ["踩点酒店 / 婚宴场地（至少 3–5 家比价）","大连 5–6 月是旺季","新人双方","5.0万",""],
+    ["签订酒店合同、支付定金、锁定日期","写明桌数浮动、退改条款、进场布置时间","新人双方","",""]
+  ]},
+  {name:"供应商锁定", time:"2026.10 – 12", color:"#a06b80", items:[
+    ["定婚庆公司 / 策划，确认布置风格与报价","看真实客片与现场图，不只看图册","新娘主导","3.0万",""],
+    ["定“四大金刚”：司仪、摄影、摄像、跟妆","旺季档期一年内就抢完，越早越好","新娘主导","1.7万",""],
+    ["试婚纱 / 秀禾 / 敬酒服，下定定制","定制周期 3–6 个月，12 月前必须下单；5 月末–6 月避开厚重缎面大拖尾，选轻纱或薄蕾丝","新娘","6千",""],
+    ["新郎西装量身定制","含衬衫、领带、皮鞋；5 月末或 6 月办：230–260g 轻薄面料 + 半衬工艺 + 浅色系","新郎","3千",""],
+    ["预约 2027 年 5 月上中旬婚纱照档期","提前半年锁定好摄影师","新娘主导","8千",""]
+  ]},
+  {name:"假期与物品", time:"2026.11 – 2027.03", color:"#8e5a6e", items:[
+    ["关注国务院《2027 年放假安排》，确认清明连休","通常在 11 月公布","新人双方","","warn"],
+    ["向单位报备婚假计划，锁定 4 月排班","辽宁婚假约 10 天，以单位制度为准","各自办理","",""],
+    ["挑选婚戒 / 对戒、三金或五金","金价波动大，可分批购入","双方","3.5万",""],
+    ["设计并印制请柬、喜糖盒、伴手礼","电子 + 纸质并行更高效","新娘主导","3千",""],
+    ["定蜜月行程、订机票酒店、办签证","护照有效期需 > 6 个月","新郎主导","3.0万",""],
+    ["与摄影师沟通风格、踩点外景（滨海路 / 旅顺 / 植物园）","先看样片定基调","新娘主导","",""],
+    ["婚礼流程方案定稿，准备音乐与视频素材","含誓言、致辞、父母发言稿","婚庆 + 新人","",""]
+  ]},
+  {name:"婚假 · 蜜月", time:"2027.04", color:"#c98a2e", items:[
+    ["清明法定连休：预计 4/3(六) – 4/5(一)","以官方公布为准","","","warn"],
+    ["拼接婚假（约 10 天）+ 年假出发","建议连休 10–15 天，性价比最高","各自办理","",""],
+    ["蜜月旅行","4 月初大连约 8–12℃，建议去南方或境外","新人双方","含上项",""]
+  ]},
+  {name:"婚纱照", time:"2027.05", color:"#4f8a6b", items:[
+    ["拍摄婚纱照（5 月上中旬最佳）","草已绿透 + 花期好；海边外景排 10 点后避海雾；拍摄排 9–11 点或 16–18 点，避开 11–15 点暴晒","新人双方","",""],
+    ["预留 1 个机动日应对天气","大连 5–6 月为海雾季，务必留 buffer","新人双方","","warn"],
+    ["选片、修片、取相册","制作周期约 4–6 周，赶在婚礼前拿到成品","新娘主导","",""]
+  ]},
+  {name:"婚礼冲刺", time:"婚礼前 30 天 – 正日", color:"#b07a8c", items:[
+    ["发出请柬、统计到场人数","建微信群 + 在线表格同步统计","双方父母","",""],
+    ["确认桌数、菜单、酒水、婚车路线与时间安排","酒水可谈自带，能省一大笔；提前确认宴会厅空调是否给力","新郎主导","1.1万",""],
+    ["现场彩排、核对物品清单、确认各方到场时间","清单打印，交给伴郎伴娘各一份；清单加入防晒、止汗、备用衬衫、便携风扇","婚庆 + 新人","",""],
+    ["婚礼正日（2027 年 5 月或 6 月）","5 月吉日多但最贵；6 月上中旬更从容；户外环节避开 11–15 点，迎宾设遮阳处，备短袖衬衫 + 领带方案","全体","",""]
+  ]},
+  {name:"婚后收尾", time:"2027.06 – 07", color:"#7a6e72", items:[
+    ["回门 / 答谢宴","","双方父母","",""],
+    ["供应商尾款结算、发票归档","逐项验收后付尾款，保留合同与转账记录","新郎主导","",""]
+  ]}
+];
+
+const BUDGET = [
+  ["婚宴","酒席（按 20 桌 × 2500 元测算）",50000,"大连中档酒店常见 2000–3500 元/桌"],
+  ["婚宴","烟酒饮料",8000,"可谈自带，通常省 30%–40%"],
+  ["场地","婚庆布置 + 灯光音响",30000,"含舞台、路引、花艺、签到区"],
+  ["人员","司仪",5000,""],
+  ["人员","摄影（双机）",4000,""],
+  ["人员","摄像（双机 + 快剪）",5000,""],
+  ["人员","跟妆造型（含试妆）",3000,""],
+  ["人员","婚车 / 接亲车队",3000,"朋友车辆可替代"],
+  ["影像","婚纱照（含相册、精修）",8000,"5 月旺季，早鸟价通常有折扣"],
+  ["服饰","婚纱 + 秀禾 + 敬酒服",6000,"租赁更省，定制更合身"],
+  ["服饰","新郎西装定制",3000,"含衬衫、领带、皮鞋"],
+  ["首饰","对戒",15000,""],
+  ["首饰","三金 / 五金",20000,"金价波动大，建议分批购入"],
+  ["物品","请柬 + 喜糖 + 伴手礼",3000,""],
+  ["物品","婚房布置 / 鲜花气球",2000,""],
+  ["旅行","蜜月旅行（2 人）",30000,"4 月出行，含机票酒店"],
+  ["其他","红包 / 杂项",5000,"伴郎伴娘、工作人员红包"]
+];
+
+const DATES = [
+  ["2026.11","国务院公布 2027 年放假安排","官方公布后方可最终锁定清明连休与拼假方案"],
+  ["2027.04.05（预计，周一）","清明节","预计连休 4/3(六) – 4/5(一)，共 3 天"],
+  ["2027.05.01（周六）","劳动节","5 月办婚礼需避开五一前后的酒店溢价"],
+  ["2027.06（预计）","端午节","农历五月初五，可能有 3 天连休，6 月办婚礼可借势"],
+  ["2027.03 下旬","大连草坪返青","草刚绿，树未发芽"],
+  ["2027.04 上中旬","草地基本全绿","拍外景仍显稀疏，适合只休假不拍照"],
+  ["2027.04 中下旬","樱花季","旅顺 203、龙王塘"],
+  ["2027.05 上中旬","拍婚纱照最佳窗口","草绿透 + 花期佳 + 16–21℃"],
+  ["2027.05 – 06","海雾季","清晨海边能见度低、风凉，外景排 10 点后，并预留机动日"],
+  ["2027.06 上中旬","户外婚礼舒适期","20–24℃，需防蚊"]
+];
+
+const KEY = "dl_wedding_2027_v1";
+let state = JSON.parse(localStorage.getItem(KEY) || '{"done":{},"actual":{},"date":"2027-06-01"}');
+const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+const fmt = n => (n || 0).toLocaleString("zh-CN");
+
+function renderTimeline(){
+  const box = document.getElementById("timelineBox");
+  box.innerHTML = "";
+  let idx = 0;
+  PHASES.forEach(p => {
+    const d = document.createElement("div");
+    d.className = "phase";
+    d.innerHTML = `<div class="phase-h"><span class="dot" style="background:${p.color}"></span>
+      <b>${p.name}</b><span class="time">${p.time}</span></div>`;
+    const ul = document.createElement("ul");
+    ul.className = "tasks";
+    p.items.forEach(it => {
+      const id = "t" + (idx++);
+      const li = document.createElement("li");
+      if (state.done[id]) li.classList.add("done");
+      li.innerHTML = `<input type="checkbox" id="${id}" ${state.done[id] ? "checked" : ""}>
+        <div><div class="t-title">${it[0]}</div>
+        <div class="t-meta">${it[2] ? `<span class="tag">${it[2]}</span>` : ""}
+        ${it[3] ? `<span class="tag money">${it[3]}</span>` : ""}
+        ${it[1] || ""}${it[4] === "warn" ? ` <span class="tag warn">需关注</span>` : ""}</div></div>`;
+      ul.appendChild(li);
+    });
+    d.appendChild(ul);
+    box.appendChild(d);
+  });
+  box.querySelectorAll("input[type=checkbox]").forEach(cb => {
+    cb.addEventListener("change", () => {
+      state.done[cb.id] = cb.checked;
+      save();
+      cb.closest("li").classList.toggle("done", cb.checked);
+      updateStats();
+    });
+  });
+}
+
+function updateStats(){
+  const all = document.querySelectorAll("#timelineBox input[type=checkbox]");
+  const done = document.querySelectorAll("#timelineBox input[type=checkbox]:checked");
+  const p = all.length ? Math.round(done.length / all.length * 100) : 0;
+  document.getElementById("pct").textContent = p + "%";
+  document.getElementById("pctBar").style.width = p + "%";
+  document.getElementById("doneCnt").textContent = done.length + " / " + all.length;
+  const d = new Date(state.date);
+  const diff = Math.ceil((d - new Date()) / 86400000);
+  document.getElementById("cdDays").textContent = diff > 0 ? diff : "已过";
+}
+
+function renderBudget(){
+  const tb = document.getElementById("budgetBody");
+  tb.innerHTML = BUDGET.map((b, i) => `
+    <tr>
+      <td>${b[0]}</td><td>${b[1]}</td>
+      <td class="num">${fmt(b[2])}</td>
+      <td class="num"><input class="money-in" type="number" min="0" step="100" data-i="${i}"
+        value="${state.actual[i] ?? ""}" placeholder="未发生"></td>
+      <td class="num" id="diff${i}">—</td>
+      <td style="font-size:12px;color:var(--ink-soft)">${b[3]}</td>
+    </tr>`).join("") + `
+    <tr class="total"><td colspan="2">小计</td><td class="num" id="sumPlan">0</td>
+      <td class="num" id="sumReal">0</td><td class="num" id="sumDiff">—</td><td></td></tr>
+    <tr class="total"><td colspan="2">备用金（按小计 10%）</td><td class="num" id="bufPlan">0</td>
+      <td class="num" id="bufReal">0</td><td class="num">—</td><td>应对临时加项</td></tr>
+    <tr class="total"><td colspan="2">合计</td><td class="num" id="totPlan">0</td>
+      <td class="num" id="totReal">0</td><td class="num" id="totDiff">—</td><td></td></tr>`;
+
+  tb.querySelectorAll(".money-in").forEach(inp => {
+    inp.addEventListener("input", () => {
+      const i = inp.dataset.i;
+      if (inp.value === "") delete state.actual[i]; else state.actual[i] = Number(inp.value);
+      save(); calcBudget();
+    });
+  });
+  calcBudget();
+}
+
+function calcBudget(){
+  let plan = 0, real = 0, hasReal = false;
+  BUDGET.forEach((b, i) => {
+    plan += b[2];
+    const v = state.actual[i];
+    const cell = document.getElementById("diff" + i);
+    if (v === undefined || v === null || v === "") { cell.textContent = "—"; }
+    else { real += v; hasReal = true; const d = v - b[2];
+      cell.textContent = (d > 0 ? "+" : "") + fmt(d);
+      cell.style.color = d > 0 ? "#c0392b" : (d < 0 ? "#4f8a6b" : "inherit"); }
+  });
+  const bufP = Math.round(plan * 0.1), bufR = Math.round(real * 0.1);
+  document.getElementById("sumPlan").textContent = fmt(plan);
+  document.getElementById("bufPlan").textContent = fmt(bufP);
+  document.getElementById("totPlan").textContent = fmt(plan + bufP);
+  document.getElementById("budgetSum").textContent = "¥" + ((plan + bufP) / 10000).toFixed(1) + "万";
+  if (hasReal) {
+    document.getElementById("sumReal").textContent = fmt(real);
+    document.getElementById("bufReal").textContent = fmt(bufR);
+    document.getElementById("totReal").textContent = fmt(real + bufR);
+    const d1 = real - plan, d2 = (real + bufR) - (plan + bufP);
+    const e1 = document.getElementById("sumDiff"), e2 = document.getElementById("totDiff");
+    e1.textContent = (d1 > 0 ? "+" : "") + fmt(d1); e1.style.color = d1 > 0 ? "#c0392b" : "#4f8a6b";
+    e2.textContent = (d2 > 0 ? "+" : "") + fmt(d2); e2.style.color = d2 > 0 ? "#c0392b" : "#4f8a6b";
+  } else {
+    ["sumReal","bufReal","totReal"].forEach(id => document.getElementById(id).textContent = "—");
+    document.getElementById("sumDiff").textContent = "—";
+    document.getElementById("totDiff").textContent = "—";
+  }
+}
+
+function renderDates(){
+  document.getElementById("datesBox").innerHTML = DATES.map(d =>
+    `<div class="row"><div class="when">${d[0]}</div>
+     <div class="what"><b>${d[1]}</b><br><span style="color:var(--ink-soft)">${d[2]}</span></div></div>`).join("");
+}
+
+document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll("section").forEach(s => s.classList.remove("show"));
+  document.getElementById(b.dataset.tab).classList.add("show");
+}));
+
+const dateInput = document.getElementById("weddingDate");
+dateInput.value = state.date;
+dateInput.addEventListener("change", () => { state.date = dateInput.value; save(); updateStats(); });
+
+document.getElementById("btnReset").addEventListener("click", () => {
+  if (confirm("确定清空所有勾选与实际花费记录？")) {
+    state = { done: {}, actual: {}, date: state.date };
+    save(); renderTimeline(); renderBudget(); updateStats();
+  }
+});
+
+renderTimeline(); renderBudget(); renderDates(); updateStats();
+document.getElementById("taskTitle").textContent =
+  "倒排时间表（" + document.querySelectorAll("#timelineBox input[type=checkbox]").length + " 项）";
+</script>
+</body>
+</html>
